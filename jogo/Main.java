@@ -6,6 +6,6 @@ public class Main{
 		
 		jogo.createMenu();
 
-		jogo.playSound("Playback.wav",-22.4f);
+		//jogo.playSound("Efeitos//Menu.wav",-10.0f);
 	}
 }

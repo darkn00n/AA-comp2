@@ -1,7 +1,14 @@
 package jogo;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.Random;
+import java.util.Scanner;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 
 public class Tabuleiro extends JFrame implements ActionListener{
@@ -43,9 +50,40 @@ public class Tabuleiro extends JFrame implements ActionListener{
 				debug[i][j]=0;
 			}
 		}
+		//playSound("Efeitos//InGame.wav",-10.0f,true);
+	}
+	public void playSound(String soundName,float f,boolean set)
+	{
+		//true == musica
+		//false == efeito
+		
+		try 
+	   {
+	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
+	    Clip clip = AudioSystem.getClip( );
+	    clip.open(audioInputStream);
+	    FloatControl gainControl = 
+	    	    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+	    	gainControl.setValue(f); 
+	    	
+	    	if(set) {
+	    		clip.start( );
+	    	}
+	    	else {
+	    		clip.loop(0);
+	    	} 
+	   }
+		catch(Exception ex)
+		{
+			System.out.println("Error with playing sound.");
+			ex.printStackTrace( );
+		}
 	}
 	public void actionPerformed(ActionEvent e){
 		Object object = e.getSource();
+		if(object == tiros[0] || object == tiros[1] || object == tiros[2] || object == tiros[3] || object == tiros[4] || object == tiros[5] || object == tiros[6]) {
+				playSound("Efeitos//BotaoClick.wav",-6.0f,false);
+		}
 		int cont=0;
 		int cont2=0;
 		int cont3=0;
@@ -56,11 +94,12 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		for(int i = 0; i<10 ; i++){
 			for(int j = 0; j<10 ; j++){
 				if (object == table2[i][j]){
+					if(tiro != 0)playSound("Efeitos//tiro.wav",-6.0f,false);
 					if(hue==0){
 						if(tiro==0){
 							JOptionPane.showMessageDialog(this,"escolha um tipo de tiro ou a dica para realizar uma ação");
 						}
-						if(tiro == 1  || tiro==2 || tiro == 3){	
+						if(tiro == 1  || tiro==2 || tiro == 3){
 							for(int k = 0; k<4 ; k++){
 								for(int h = 0; h<barcos[k].tam ; h++){
 									if(barcos[k].partes[h].getX() == j && barcos[k].partes[h].getY() == i){
@@ -2742,6 +2781,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		int dire=1;
 		int tam=0;
 		boolean okay = false;
+		boolean okay2 = false;
 		boolean foi = true;
 		
 		while(!okay){
@@ -2961,119 +3001,248 @@ public class Tabuleiro extends JFrame implements ActionListener{
 				okay = true;
 			}
 			else if(qual.equalsIgnoreCase("manual")){
-				jogo.createPreGame();
-				this.hue=1;
-				JOptionPane.showMessageDialog(null,"Escolha os barcos, depois a coordenada desejada e por fim a direção do barco");
-				okay = true;
-				foi=true;
-				for(int i = 0; i<4 ; i++){
-					if(i==0) tam = 4;
-					else if(i==1) tam = 3;
-					else if(i==2) tam = 2;
-					else if(i==3) tam = 2;
-					int qualer[] = {0,0,0,0};
-					aux = rand.nextInt(10);
-					aux2 = rand.nextInt(10);
-					Coordenada inicial = new Coordenada(aux,aux2);
-					while(foi){
-						dire = rand.nextInt(4) + 1;
-						if(dire == 1 && qualer[0]==0){
-							if(aux2-tam+1>=0){
-								int comp = aux2-tam+1;
-								for(int j=0;j<i;j++) {
-									for(int k=0;k<barcos[j].tam;k++){
-										if(barcos[j].partes[k].getY()>=comp && barcos[j].partes[k].getY()<=aux2 && barcos[j].partes[k].getX()==aux) {
-											qualer[0]=1;
-											dire = rand.nextInt(3) + 2;
-											break;
-										}
-									}
-									if(qualer[0]==1) break;
-								}
-								if(qualer[0]==0) foi=false;
-							}
-							else{
-								qualer[0]=1;
-								dire = rand.nextInt(3) + 2;
-							}
-						}
-						else if(dire == 2 && qualer[1]==0){
-							if(aux+tam-1<=9){
-								int comp = aux+tam-1;
-								for(int j=0;j<i;j++) {
-									for(int k=0;k<barcos[j].tam;k++){
-										if(barcos[j].partes[k].getX()<=comp && barcos[j].partes[k].getX()>=aux && barcos[j].partes[k].getY()==aux2) {
-											qualer[1]=1;
-											dire = rand.nextInt(4) + 1;
-											break;
-										}
-									}
-									if(qualer[1]==1) break;
-								}
-								if(qualer[1]==0) foi=false;
-							}
-							else {
-								qualer[1]=1;
-								dire = rand.nextInt(4) + 1;
-							}
-						}
-						else if(dire == 3 && qualer[2]==0){
-							if(aux2+tam-1<=9){
-								int comp = aux2+tam-1;
-								for(int j=0;j<i;j++) {
-									for(int k=0;k<barcos[j].tam;k++){
-										if(barcos[j].partes[k].getY()<=comp && barcos[j].partes[k].getY()>=aux2 && barcos[j].partes[k].getX()==aux) {
-											qualer[2]=1;
-											dire = rand.nextInt(4) + 1;
-											break;
-										}
-									}
-									if(qualer[2]==1) break;
-								}
-								if(qualer[2]==0) foi=false;
-							}
-							else {
-								qualer[2]=1;
-								dire = rand.nextInt(4) + 1;
-							}
-						}
-						else if(dire == 4 && qualer[3]==0){
-							if(aux-tam+1>=0){
-								int comp = aux-tam+1;
-								for(int j=0;j<i;j++) {
-									for(int k=0;k<barcos[j].tam;k++){
-										if(barcos[j].partes[k].getX()>=comp && barcos[j].partes[k].getX()<=aux && barcos[j].partes[k].getY()==aux2) {
-											qualer[3]=1;
-											dire = rand.nextInt(3) + 1;
-											break;
-										}
-									}
-									if(qualer[3]==1) break;
-								}
-								if(qualer[3]==0) foi=false;
-							}
-							else {
-								qualer[3]=1;
-								dire = rand.nextInt(3) + 1;
-							}
-						}
-						if(qualer[0]==1 && qualer[1]==1 && qualer[2]==1 && qualer[3]==1){
+				while(!okay2){
+					String wut = JOptionPane.showInputDialog("Você deseja inserir por arquivo ou interface gráfica?");
+					if(wut == null){
+						okay2=true;
+						okay=true;
+						jogo.createMenu();
+						this.dispose();
+					}
+					else if(wut.equalsIgnoreCase("Interface Gráfica") || wut.equalsIgnoreCase("Interface Grafica") || wut.equalsIgnoreCase("Interface") || wut.equalsIgnoreCase("Gráfica") || wut.equalsIgnoreCase("Grafica")){
+						jogo.createPreGame();
+						this.hue=1;
+						JOptionPane.showMessageDialog(null,"Escolha os barcos, depois a coordenada desejada e por fim a direção do barco");
+						okay = true;
+						okay2 = true;
+						foi=true;
+						for(int i = 0; i<4 ; i++){
+							if(i==0) tam = 4;
+							else if(i==1) tam = 3;
+							else if(i==2) tam = 2;
+							else if(i==3) tam = 2;
+							int qualer[] = {0,0,0,0};
 							aux = rand.nextInt(10);
 							aux2 = rand.nextInt(10);
-							inicial = new Coordenada(aux,aux2);
-							for(int j=0;j<4;j++){
-								qualer[j]=0;
+							Coordenada inicial = new Coordenada(aux,aux2);
+							while(foi){
+								dire = rand.nextInt(4) + 1;
+								if(dire == 1 && qualer[0]==0){
+									if(aux2-tam+1>=0){
+										int comp = aux2-tam+1;
+										for(int j=0;j<i;j++) {
+											for(int k=0;k<barcos[j].tam;k++){
+												if(barcos[j].partes[k].getY()>=comp && barcos[j].partes[k].getY()<=aux2 && barcos[j].partes[k].getX()==aux) {
+													qualer[0]=1;
+													dire = rand.nextInt(3) + 2;
+													break;
+												}
+											}
+											if(qualer[0]==1) break;
+										}
+										if(qualer[0]==0) foi=false;
+									}
+									else{
+										qualer[0]=1;
+										dire = rand.nextInt(3) + 2;
+									}
+								}
+								else if(dire == 2 && qualer[1]==0){
+									if(aux+tam-1<=9){
+										int comp = aux+tam-1;
+										for(int j=0;j<i;j++) {
+											for(int k=0;k<barcos[j].tam;k++){
+												if(barcos[j].partes[k].getX()<=comp && barcos[j].partes[k].getX()>=aux && barcos[j].partes[k].getY()==aux2) {
+													qualer[1]=1;
+													dire = rand.nextInt(4) + 1;
+													break;
+												}
+											}
+											if(qualer[1]==1) break;
+										}
+										if(qualer[1]==0) foi=false;
+									}
+									else {
+										qualer[1]=1;
+										dire = rand.nextInt(4) + 1;
+									}
+								}
+								else if(dire == 3 && qualer[2]==0){
+									if(aux2+tam-1<=9){
+										int comp = aux2+tam-1;
+										for(int j=0;j<i;j++) {
+											for(int k=0;k<barcos[j].tam;k++){
+												if(barcos[j].partes[k].getY()<=comp && barcos[j].partes[k].getY()>=aux2 && barcos[j].partes[k].getX()==aux) {
+													qualer[2]=1;
+													dire = rand.nextInt(4) + 1;
+													break;
+												}
+											}
+											if(qualer[2]==1) break;
+										}
+										if(qualer[2]==0) foi=false;
+									}
+									else {
+										qualer[2]=1;
+										dire = rand.nextInt(4) + 1;
+									}
+								}
+								else if(dire == 4 && qualer[3]==0){
+									if(aux-tam+1>=0){
+										int comp = aux-tam+1;
+										for(int j=0;j<i;j++) {
+											for(int k=0;k<barcos[j].tam;k++){
+												if(barcos[j].partes[k].getX()>=comp && barcos[j].partes[k].getX()<=aux && barcos[j].partes[k].getY()==aux2) {
+													qualer[3]=1;
+													dire = rand.nextInt(3) + 1;
+													break;
+												}
+											}
+											if(qualer[3]==1) break;
+										}
+										if(qualer[3]==0) foi=false;
+									}
+									else {
+										qualer[3]=1;
+										dire = rand.nextInt(3) + 1;
+									}
+								}
+								if(qualer[0]==1 && qualer[1]==1 && qualer[2]==1 && qualer[3]==1){
+									aux = rand.nextInt(10);
+									aux2 = rand.nextInt(10);
+									inicial = new Coordenada(aux,aux2);
+									for(int j=0;j<4;j++){
+										qualer[j]=0;
+									}
+								}
 							}
+							barcos[i] = new Barco(i,inicial,dire);
+							foi=true;
 						}
 					}
-					barcos[i] = new Barco(i,inicial,dire);
-					foi=true;
+					else if(wut.equalsIgnoreCase("arquivo") || wut.equalsIgnoreCase("arq")){
+						okay2=true;
+						okay=true;
+						Scanner arquivo = new Scanner("./batalhanaval.txt");
+						String l1 = arquivo.nextLine();
+						String l2 = arquivo.nextLine();
+						String l3 = arquivo.nextLine();
+						String l4 = arquivo.nextLine();
+						
+						System.out.println(l1+"\n"+l2+"\n"+l3+"\n"+l4);
+						
+						foi=true;
+						for(int i = 0; i<4 ; i++){
+							if(i==0) tam = 4;
+							else if(i==1) tam = 3;
+							else if(i==2) tam = 2;
+							else if(i==3) tam = 2;
+							int qualer[] = {0,0,0,0};
+							aux = rand.nextInt(10);
+							aux2 = rand.nextInt(10);
+							Coordenada inicial = new Coordenada(aux,aux2);
+							while(foi){
+								dire = rand.nextInt(4) + 1;
+								if(dire == 1 && qualer[0]==0){
+									if(aux2-tam+1>=0){
+										int comp = aux2-tam+1;
+										for(int j=0;j<i;j++) {
+											for(int k=0;k<barcos[j].tam;k++){
+												if(barcos[j].partes[k].getY()>=comp && barcos[j].partes[k].getY()<=aux2 && barcos[j].partes[k].getX()==aux) {
+													qualer[0]=1;
+													dire = rand.nextInt(3) + 2;
+													break;
+												}
+											}
+											if(qualer[0]==1) break;
+										}
+										if(qualer[0]==0) foi=false;
+									}
+									else{
+										qualer[0]=1;
+										dire = rand.nextInt(3) + 2;
+									}
+								}
+								else if(dire == 2 && qualer[1]==0){
+									if(aux+tam-1<=9){
+										int comp = aux+tam-1;
+										for(int j=0;j<i;j++) {
+											for(int k=0;k<barcos[j].tam;k++){
+												if(barcos[j].partes[k].getX()<=comp && barcos[j].partes[k].getX()>=aux && barcos[j].partes[k].getY()==aux2) {
+													qualer[1]=1;
+													dire = rand.nextInt(4) + 1;
+													break;
+												}
+											}
+											if(qualer[1]==1) break;
+										}
+										if(qualer[1]==0) foi=false;
+									}
+									else {
+										qualer[1]=1;
+										dire = rand.nextInt(4) + 1;
+									}
+								}
+								else if(dire == 3 && qualer[2]==0){
+									if(aux2+tam-1<=9){
+										int comp = aux2+tam-1;
+										for(int j=0;j<i;j++) {
+											for(int k=0;k<barcos[j].tam;k++){
+												if(barcos[j].partes[k].getY()<=comp && barcos[j].partes[k].getY()>=aux2 && barcos[j].partes[k].getX()==aux) {
+													qualer[2]=1;
+													dire = rand.nextInt(4) + 1;
+													break;
+												}
+											}
+											if(qualer[2]==1) break;
+										}
+										if(qualer[2]==0) foi=false;
+									}
+									else {
+										qualer[2]=1;
+										dire = rand.nextInt(4) + 1;
+									}
+								}
+								else if(dire == 4 && qualer[3]==0){
+									if(aux-tam+1>=0){
+										int comp = aux-tam+1;
+										for(int j=0;j<i;j++) {
+											for(int k=0;k<barcos[j].tam;k++){
+												if(barcos[j].partes[k].getX()>=comp && barcos[j].partes[k].getX()<=aux && barcos[j].partes[k].getY()==aux2) {
+													qualer[3]=1;
+													dire = rand.nextInt(3) + 1;
+													break;
+												}
+											}
+											if(qualer[3]==1) break;
+										}
+										if(qualer[3]==0) foi=false;
+									}
+									else {
+										qualer[3]=1;
+										dire = rand.nextInt(3) + 1;
+									}
+								}
+								if(qualer[0]==1 && qualer[1]==1 && qualer[2]==1 && qualer[3]==1){
+									aux = rand.nextInt(10);
+									aux2 = rand.nextInt(10);
+									inicial = new Coordenada(aux,aux2);
+									for(int j=0;j<4;j++){
+										qualer[j]=0;
+									}
+								}
+							}
+							barcos[i] = new Barco(i,inicial,dire);
+							foi=true;
+						}
+					}
 				}
 			}
 			else {
 				JOptionPane.showMessageDialog(null,"Comando invalido !!! Tente novamente");
 				qual = JOptionPane.showInputDialog("Deseja que os barcos sejam colocados de maneira aleatoria ou manual?");
 				if(qual == null){
+					okay=true;
 					jogo.createMenu();
 					this.dispose();
 				}
@@ -3145,9 +3314,19 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		tiros[5].setRolloverIcon(Restarts);
 		tiros[6].setRolloverIcon(VoltarMenus);
 		
+		for(int i=0;i<7;i++) {
+			tiros[i].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				playSound("Efeitos//BotaoEntered.wav", -5.0f, false);
+			}
+			});
+		}
+		
 		for(int i = 0; i<7; i++) {
 			tiros[i].addActionListener(this);
 			tiros[i].setPreferredSize(new Dimension(10,10));
+			
 		}
 		
 		for(int i=0; i<10; i++) {
@@ -3363,6 +3542,22 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			teste.add(new Label(" "));
 		}
 
+		for(int i=0;i<10;i++) {
+			for(int j=0;j<10;j++) {
+				table2[i][j].addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						playSound("Efeitos//Agua2.wav", -5.0f, false);
+					}
+				});
+				table[i][j].addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						playSound("Efeitos//Agua2.wav", -5.0f, false);
+					}
+				});
+			}
+		}
 		//adicionando os componente no ContentPane do Frame
 		this.getContentPane().add(compsToExperiment, BorderLayout.CENTER);
 		this.getContentPane().add(teste, BorderLayout.EAST);
@@ -3395,6 +3590,9 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(this,"Parabens voce venceu o jogo !");
 			this.jogo.createMenu();
 			this.dispose();
+		}
+		else{
+			playSound("Efeitos//tiro.wav",-6.0f,false);
 		}
 		for(int i =0;i<4;i++){
 			if(prox[i]!=null && barcosali[i].vivo==false){
@@ -3587,7 +3785,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 				proximo=0;
 			}
 		}
-		System.out.println(x+" "+y);
 		if(tiro == 1  || tiro==2 || tiro == 3){	
 			for(int k = 0; k<4 ; k++){
 				for(int h = 0; h<barcosali[k].tam ; h++){

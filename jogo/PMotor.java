@@ -92,6 +92,7 @@ public class PMotor {
 			ex.printStackTrace( );
 		}
 	}
+
 	public void Dispose(Object qualquer){
 		if(qualquer instanceof Menu ){
 			((Menu)qualquer).dispose();

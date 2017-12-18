@@ -1,6 +1,12 @@
 package jogo;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 
 public class PreGame extends JFrame implements ActionListener {
@@ -31,6 +37,33 @@ public class PreGame extends JFrame implements ActionListener {
 		qualer[1]=0;
 		qualer[2]=0;
 		qualer[3]=0;
+	}
+	public void playSound(String soundName,float f,boolean set)
+	{
+		//true == musica
+		//false == efeito
+		
+		try 
+	   {
+	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
+	    Clip clip = AudioSystem.getClip( );
+	    clip.open(audioInputStream);
+	    FloatControl gainControl = 
+	    	    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+	    	gainControl.setValue(f); 
+	    	
+	    	if(set) {
+	    		clip.start( );
+	    	}
+	    	else {
+	    		clip.loop(0);
+	    	} 
+	   }
+		catch(Exception ex)
+		{
+			System.out.println("Error with playing sound.");
+			ex.printStackTrace( );
+		}
 	}
 	public void addComponentsToPane() {
 		final JPanel navios = new JPanel();
@@ -79,6 +112,13 @@ public class PreGame extends JFrame implements ActionListener {
 		back.setPreferredSize(new Dimension(70,70));
 		voltar = new JButton(VoltarMenu);
 		voltar.setRolloverIcon(VoltarMenuS);
+		
+		voltar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				playSound("Efeitos//BotaoEntered.wav", -5.0f, false);
+			}
+		});
 				
 		voltar.addActionListener(this); // adiciona as acoes aos botoes
 		voltar.setPreferredSize(new Dimension(10,10)); // define tamanho
@@ -93,6 +133,14 @@ public class PreGame extends JFrame implements ActionListener {
 		buttons[2] = new JButton(NavioEscolta); // adiciona o botao ao vetor de botoes
 		buttons[3] = new JButton(PortaAvioes); // adiciona o botao ao vetor de botoes
 		
+		for(int i = 0;i<4;i++) {
+			buttons[i].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					playSound("Efeitos//BotaoEntered.wav", -5.0f, false);
+				}
+			});
+		}
 		for(int i = 0; i<4; i++) {
 			buttons[i].addActionListener(this); // adiciona as acoes aos botoes
 			buttons[i].setPreferredSize(new Dimension(10,10)); // define tamanho
@@ -109,6 +157,13 @@ public class PreGame extends JFrame implements ActionListener {
 				table[i][j] = new JButton(AguaOff);
 				table[i][j].setPreferredSize(new Dimension(10,10));
 				table[i][j].addActionListener(this);
+				
+				table[i][j].addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						playSound("Efeitos//Agua2.wav", -5.0f, false);
+					}
+				});
 			}
 		}	
 		
@@ -269,26 +324,29 @@ public class PreGame extends JFrame implements ActionListener {
 	}
 	public void actionPerformed(ActionEvent e){		
 		Object object = e.getSource();
+		if(object == buttons[0] || object == buttons[1] || object == buttons[2] || object == buttons[3] || object == voltar) {
+			playSound("Efeitos//BotaoClick.wav",-6.0f,false);
+		}
 		int largura=50;
 		int altura=47;
 		Barco barco;
 		
 		if(qual==0){
 			if(object == buttons[0]) {
-				//JOptionPane.showMessageDialog(this," NAVIO 0 MANO ");
 				qual=1;
+				playSound("Efeitos//BotaoClick.wav",-8.0f,false);
 			}
 			if(object == buttons[1]) {
-				//JOptionPane.showMessageDialog(this," NAVIO 1 SLK ");
 				qual=2;
+				playSound("Efeitos//BotaoClick.wav",-8.0f,false);
 			}
 			if(object == buttons[2]) {
-				//JOptionPane.showMessageDialog(this," KK EAE NAVIO 2 ");
 				qual=3;
+				playSound("Efeitos//BotaoClick.wav",-8.0f,false);
 			}
 			if(object == buttons[3]){
-				//JOptionPane.showMessageDialog(this," NAVIO 3 :S ");
 				qual=4;
+				playSound("Efeitos//BotaoClick.wav",-8.0f,false);
 			}
 		}
 
