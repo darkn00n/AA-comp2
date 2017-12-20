@@ -94,7 +94,12 @@ public class PreGame extends JFrame implements ActionListener {
 		ImageIcon NavioEscolta = new ImageIcon("Navios//Escolta2.jpg");
 		ImageIcon PortaAvioes = new ImageIcon("Navios//PortaAvioes2.jpg");
 		
-		// Imagens para utilizar no tabuleiro
+		ImageIcon CacaS = new ImageIcon("Navios//CacaS.jpg");
+        ImageIcon EscoltaS = new ImageIcon("Navios//EscoltaS.jpg");
+        ImageIcon SubmarinoS = new ImageIcon("Navios//SubmarinoS.jpg");
+        ImageIcon PortaAvioesS = new ImageIcon("Navios//PortaAvioesS.jpg");
+
+        // Imagens para utilizar no tabuleiro
 		ImageIcon AguaOff = new ImageIcon("Agua//WaterNoClick.jpg");
 		
 		ImageIcon VoltarMenu = new ImageIcon("Botoes//VoltarMenu2.jpg");
@@ -111,6 +116,13 @@ public class PreGame extends JFrame implements ActionListener {
 		PortaAvioes.setImage(PortaAvioes.getImage().getScaledInstance(largura, altura, 100));
 		AguaOff.setImage(AguaOff.getImage().getScaledInstance(50,47,100));
 		
+		
+		CacaS.setImage(CacaS.getImage().getScaledInstance(largura,altura,100));
+        EscoltaS.setImage(EscoltaS.getImage().getScaledInstance(largura,altura,100));
+        SubmarinoS.setImage(SubmarinoS.getImage().getScaledInstance(largura,altura,100));
+        PortaAvioesS.setImage(PortaAvioesS.getImage().getScaledInstance(largura,altura,100));
+        
+        
 		VoltarMenu.setImage(VoltarMenu.getImage().getScaledInstance(200,68,100));
 		VoltarMenuS.setImage(VoltarMenuS.getImage().getScaledInstance(200,68,100));
 		
@@ -152,6 +164,11 @@ public class PreGame extends JFrame implements ActionListener {
 		buttons[2] = new JButton(NavioEscolta); // adiciona o botao ao vetor de botoes
 		buttons[3] = new JButton(PortaAvioes); // adiciona o botao ao vetor de botoes
 		
+		buttons[0].setRolloverIcon(CacaS);
+        buttons[1].setRolloverIcon(SubmarinoS);
+        buttons[2].setRolloverIcon(EscoltaS);
+        buttons[3].setRolloverIcon(PortaAvioesS);
+        
 		for(int i = 0;i<4;i++) {
 			buttons[i].addMouseListener(new MouseAdapter() {
 				@Override
@@ -375,7 +392,7 @@ public class PreGame extends JFrame implements ActionListener {
 			for(int j = 0; j<10 ; j++){
 				if(object == table[i][j]){
 					if(qual==0){
-						JOptionPane.showMessageDialog(this,"Escolha um barco primeiro");
+						JOptionPane.showMessageDialog(this,"Escolha um barco primeiro","",JOptionPane.WARNING_MESSAGE);
 					}
 					if(qual != 0 && escolheu==0){
 						inicial = new Coordenada(j,i);
@@ -383,7 +400,7 @@ public class PreGame extends JFrame implements ActionListener {
 						minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 						table[i][j].setIcon(minhaImagem);
 						table[i][j].removeActionListener(this);
-						JOptionPane.showMessageDialog(this," Agora clique em outro botão para colocar o barco nessa direção.\n Veja se tem espaço, vc não vai bugar o jogo só vai perder tempo :D");
+						JOptionPane.showMessageDialog(this," Agora clique em outro botão para colocar o barco nessa direção.\n Veja se tem espaço, vc não bugará o jogo apenas perderá tempo","",JOptionPane.WARNING_MESSAGE);
 						escolheu=2;
 					}
 					if(escolheu==1){
@@ -404,7 +421,7 @@ public class PreGame extends JFrame implements ActionListener {
 							dire=4;
 						}
 						if(inicial.getY() != i && inicial.getX() != j){
-							JOptionPane.showMessageDialog(this," Não da pra colocar inclinado, escolhe de novo");
+							JOptionPane.showMessageDialog(this," Não é possivel colocar barcos em diagonal \n Escolha novamente","",JOptionPane.WARNING_MESSAGE);
 							hue=1;
 							dire=0;
 						}
@@ -856,7 +873,7 @@ public class PreGame extends JFrame implements ActionListener {
 							qual=0;
 						}
 						if(deumerda==1 && aux==0){
-							JOptionPane.showMessageDialog(this,"Falei que ia perder tempo, não tem espaço nessa direção tenta outra ai");
+							JOptionPane.showMessageDialog(this,"Falei que perderia tempo, não tem espaço nessa direção tenta outra ai","",JOptionPane.WARNING_MESSAGE);
 						}
 					}
 				}
@@ -1183,7 +1200,7 @@ public class PreGame extends JFrame implements ActionListener {
 		}
 		if(barcosali[0]!=null && barcosali[1]!=null && barcosali[2]!=null && barcosali[3]!=null){
 			jogo.Setbarcos(barcosali);
-			JOptionPane.showMessageDialog(this,"Clique em qualquer botão da janela do jogo para começar o jogo");
+			JOptionPane.showMessageDialog(this,"Clique em qualquer botão da janela do jogo para começar o jogo","",JOptionPane.WARNING_MESSAGE);
 			this.dispose();
 		}
 		if(object==voltar){

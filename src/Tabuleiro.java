@@ -27,6 +27,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	private JLabel [] labelsFirst,labelsSecond;
 	private String [] letras = {"  A","  B","  C","  D","  E","  F","  G","  H","   I","   J",
 								"   1","   2","   3","   4","   5","   6","   7","   8","   9","   10"};
+	private ImageIcon SubmarinoS,EscoltaS,CacaS,Submarino,Escolta,Caca;
 	
 	public Tabuleiro(String n,PMotor jogo){
 		super(n);
@@ -82,9 +83,8 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
 	    Clip clip = AudioSystem.getClip( );
 	    clip.open(audioInputStream);
-	    FloatControl gainControl = 
-	    	    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-	    	gainControl.setValue(f); 
+	    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+	    gainControl.setValue(f); 
 	    	
 	    	if(set) {
 	    		clip.start( );
@@ -102,20 +102,21 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e){
 		Object object = e.getSource();
 		if(object == tiros[0] || object == tiros[1] || object == tiros[2] || object == tiros[3] || object == tiros[4] || object == tiros[5] || object == tiros[6]) {
-				playSound("Efeitos//BotaoClick.wav",-6.0f,false);
+			playSound("Efeitos//BotaoClick.wav",-6.0f,false);
 		}
+		
 		int cont=0;
 		int cont2=0;
 		int cont3=0;
 		int cont4=0;
 		int cont5=0;
 		int aux=0,aux2=0;
-
+		
 		for(int i = 0; i<10 ; i++){
 			for(int j = 0; j<10 ; j++){
 				if (object == table2[i][j]){
-					if(tiro != 0)playSound("Efeitos//tiro.wav",-6.0f,false);
 					if(hue==0){
+						if(tiro != 0) playSound("Efeitos//tiro.wav",-6.0f,false);
 						if(tiro==0){
 							JOptionPane.showMessageDialog(this,"Escolha um tipo de tiro ou a dica para realizar uma ação","",JOptionPane.WARNING_MESSAGE);
 						}
@@ -276,7 +277,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
+											barcos[k].quando++;
 											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==1){
@@ -394,8 +395,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==2){
 											if(h==0){
@@ -474,8 +473,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando == barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==3){
 											if(h==0){
@@ -554,13 +551,15 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
-										aux=1;
+										if(barcos[k].partes[h].getviva()==true){
+											barcos[k].quando += 1;
+											if(barcos[k].quando == barcos[k].tam) barcos[k].vivo = false;
+											aux=1;
+										}
+										barcos[k].partes[h].setviva(false);
 									}
 									else{
-									
 										cont++;
 									}
 								}
@@ -733,8 +732,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==1){
 											if(h==0){
@@ -851,8 +848,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==2){
 											if(h==0){
@@ -931,8 +926,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando == barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==3){
 											if(h==0){
@@ -1011,10 +1004,13 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
-										aux=1;
+										if(barcos[k].partes[h].getviva()==true) {
+											barcos[k].quando += 1;
+											if(barcos[k].quando == barcos[k].tam) barcos[k].vivo = false;
+											aux=1;
+										}
+										barcos[k].partes[h].setviva(false);
 									}
 									else{
 										cont2++;
@@ -1188,8 +1184,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==1){
 											if(h==0){
@@ -1306,8 +1300,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==2){
 											if(h==0){
@@ -1386,8 +1378,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando == barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==3){
 											if(h==0){
@@ -1466,10 +1456,13 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
-										aux=1;
+										if(barcos[k].partes[h].getviva()==true) {
+											barcos[k].quando += 1;
+											if(barcos[k].quando == barcos[k].tam) barcos[k].vivo = false;
+											aux=1;
+										}
+										barcos[k].partes[h].setviva(false);
 									}
 									else{
 										cont3++;
@@ -1643,8 +1636,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==1){
 											if(h==0){
@@ -1761,8 +1752,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==2){
 											if(h==0){
@@ -1841,8 +1830,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando == barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==3){
 											if(h==0){
@@ -1921,10 +1908,13 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
-										aux=1;
+										if(barcos[k].partes[h].getviva()==true) {
+											barcos[k].quando += 1;
+											if(barcos[k].quando == barcos[k].tam) barcos[k].vivo = false;
+											aux=1;
+										}
+										barcos[k].partes[h].setviva(false);
 									}
 									else{
 										cont4++;
@@ -2098,8 +2088,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==1){
 											if(h==0){
@@ -2216,8 +2204,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==2){
 											if(h==0){
@@ -2296,8 +2282,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando == barcos[k].tam) barcos[k].vivo = false;
 										}
 										else if(k==3){
 											if(h==0){
@@ -2376,10 +2360,13 @@ public class Tabuleiro extends JFrame implements ActionListener{
 													
 												}
 											}
-											barcos[k].quando += 1;
-											if(barcos[k].quando==barcos[k].tam) barcos[k].vivo = false;
 										}
-										aux=1;
+										if(barcos[k].partes[h].getviva()==true) {
+											barcos[k].quando += 1;
+											if(barcos[k].quando == barcos[k].tam) barcos[k].vivo = false;
+											aux=1;
+										}
+										barcos[k].partes[h].setviva(false);
 									}
 									else{
 										cont5++;
@@ -2465,6 +2452,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 							tiros[0].setIcon(minhaImagem);
 							tiros[0].removeActionListener(this);
+							tiros[0].setRolloverIcon(minhaImagem);
 						}
 					}
 					if(i==1){
@@ -2477,6 +2465,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 							tiros[1].setIcon(minhaImagem);
 							tiros[1].removeActionListener(this);
+							tiros[1].setRolloverIcon(minhaImagem);
 						}
 					}
 					if(i==2){
@@ -2489,6 +2478,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 							tiros[2].setIcon(minhaImagem);
 							tiros[2].removeActionListener(this);
+							tiros[2].setRolloverIcon(minhaImagem);
 						}
 					}
 					if(i==3){
@@ -2510,24 +2500,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 					if(i==5){
 						boolean result = JOptionPane.showConfirmDialog(this, "O jogo será reinicializado. \n Deseja prosseguir?", "", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0;		
 						if(result == true){
-							for(int k=0;k<10;k++){
-								for(int h=0;h<10;h++){
-									ImageIcon minhaImagem = new ImageIcon("agua//WaterNoClick.jpg");
-									int largura=50;
-									int altura=47;
-									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura,altura,100));
-									table2[k][h].setIcon(minhaImagem);
-									table[k][h].setIcon(minhaImagem);
-									this.Mostra();
-									table2[k][h].removeActionListener(this);
-									table2[k][h].addActionListener(this);
-									dica=3;
-								}
-							}
-						}
-						for(int k=0;k<4;k++) {
-							barcos[k].vivo=true;
-							barcosali[k].vivo=true;
+							this.Reinicia();
 						}
 					}
 					if(i==6){
@@ -2550,7 +2523,60 @@ public class Tabuleiro extends JFrame implements ActionListener{
 				}
 			}
 		}
+	}
+	
+	public void Reinicia(){
+		JOptionPane.showMessageDialog(this, "Aguarde, o jogo será reinicializado.", "",JOptionPane.WARNING_MESSAGE);
+		this.setVisible(false);
+		for(int k=0;k<10;k++){
+			for(int h=0;h<10;h++){				
+				ImageIcon minhaImagem = new ImageIcon("agua//WaterNoClick.jpg");
+				int largura=50;
+				int altura=47;
+				minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura,altura,100));
+				table2[k][h].setIcon(minhaImagem);
+				table[k][h].setIcon(minhaImagem);
+				this.Mostra();
+				table2[k][h].removeActionListener(this);
+				table2[k][h].addActionListener(this);
+			}
+		}
+		dica=3;
+        proximo=0;
+        for(int k=0;k<10;k++) {
+            if(k<4){
+                prox[k]=null;
+            }
+            for(int j=0;j<10;j++) {
+                quais[k][j]=0;
+                debug[k][j]=0;
+            }
+        }
+		for(int k=0;k<4;k++){
+            barcos[k].vivo=true;
+            barcosali[k].vivo=true;
+            barcos[k].quando=0;
+            barcosali[k].quando=0;
+            for(int h=0;h<barcos[k].tam;h++) {
+                barcos[k].partes[h].setviva(true);
+            }
+            for(int h=0;h<barcosali[k].tam;h++) {
+                barcosali[k].partes[h].setviva(true);
+            }
+        }
+		for(int y=0;y<7;y++) {
+			tiros[y].removeActionListener(this);
+			tiros[y].addActionListener(this);
+		}
 		
+		tiros[0].setRolloverIcon(SubmarinoS);
+		tiros[1].setRolloverIcon(EscoltaS);
+		tiros[2].setRolloverIcon(CacaS);
+		tiros[0].setIcon(Submarino);
+		tiros[1].setIcon(Escolta);
+		tiros[2].setIcon(Caca);
+		this.setVisible(true);
+		JOptionPane.showMessageDialog(this, "O jogo foi reinicializado com sucesso.","",JOptionPane.WARNING_MESSAGE);
 	}
 	public void Mostra(){
 		int altura=47;
@@ -2563,88 +2589,88 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							if(k==0){
 								if(h==0){
 									if(barcosali[k].direcao==1){
-										ImageIcon minhaImagem = new ImageIcon("navios//PVpart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//PVpart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==2){
-										ImageIcon minhaImagem = new ImageIcon("navios//Ppart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Ppart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==3){
-										ImageIcon minhaImagem = new ImageIcon("navios//PVpart4.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//PVpart4.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==4){
-										ImageIcon minhaImagem = new ImageIcon("navios//Ppart4.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Ppart4.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 								}
 								else if(h==1){
 									if(barcosali[k].direcao==1){
-										ImageIcon minhaImagem = new ImageIcon("navios//PVpart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//PVpart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==2){
-										ImageIcon minhaImagem = new ImageIcon("navios//Ppart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Ppart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==3){
-										ImageIcon minhaImagem = new ImageIcon("navios//PVpart3.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//PVpart3.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==4){
-										ImageIcon minhaImagem = new ImageIcon("navios//Ppart3.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Ppart3.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 								}
 								else if(h==2){
 									if(barcosali[k].direcao==1){
-										ImageIcon minhaImagem = new ImageIcon("navios//PVpart3.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//PVpart3.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==2){
-										ImageIcon minhaImagem = new ImageIcon("navios//Ppart3.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Ppart3.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==3){
-										ImageIcon minhaImagem = new ImageIcon("navios//PVpart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//PVpart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==4){
-										ImageIcon minhaImagem = new ImageIcon("navios//Ppart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Ppart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 								}
 								else if(h==3){
 									if(barcosali[k].direcao==1){
-										ImageIcon minhaImagem = new ImageIcon("navios//PVpart4.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//PVpart4.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==2){
-										ImageIcon minhaImagem = new ImageIcon("navios//Ppart4.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Ppart4.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==3){
-										ImageIcon minhaImagem = new ImageIcon("navios//PVpart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//PVpart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==4){
-										ImageIcon minhaImagem = new ImageIcon("navios//Ppart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Ppart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
@@ -2653,66 +2679,66 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							else if(k==1){
 								if(h==0){
 									if(barcosali[k].direcao==1){
-										ImageIcon minhaImagem = new ImageIcon("navios//EVpart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//EVpart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==2){
-										ImageIcon minhaImagem = new ImageIcon("navios//Epart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Epart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==3){
-										ImageIcon minhaImagem = new ImageIcon("navios//EVpart3.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//EVpart3.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==4){
-										ImageIcon minhaImagem = new ImageIcon("navios//Epart3.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Epart3.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 								}
 								else if(h==1){
 									if(barcosali[k].direcao==1){
-										ImageIcon minhaImagem = new ImageIcon("navios//EVpart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//EVpart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==2){
-										ImageIcon minhaImagem = new ImageIcon("navios//Epart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Epart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==3){
-										ImageIcon minhaImagem = new ImageIcon("navios//EVpart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//EVpart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==4){
-										ImageIcon minhaImagem = new ImageIcon("navios//Epart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Epart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 								}
 								else if(h==2){
 									if(barcosali[k].direcao==1){
-										ImageIcon minhaImagem = new ImageIcon("navios//EVpart3.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//EVpart3.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==2){
-										ImageIcon minhaImagem = new ImageIcon("navios//Epart3.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Epart3.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==3){
-										ImageIcon minhaImagem = new ImageIcon("navios//EVpart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//EVpart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==4){
-										ImageIcon minhaImagem = new ImageIcon("navios//Epart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Epart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
@@ -2721,44 +2747,44 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							else if(k==2){
 								if(h==0){
 									if(barcosali[k].direcao==1){
-										ImageIcon minhaImagem = new ImageIcon("navios//SVpart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//SVpart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==2){
-										ImageIcon minhaImagem = new ImageIcon("navios//Spart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Spart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==3){
-										ImageIcon minhaImagem = new ImageIcon("navios//SVpart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//SVpart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==4){
-										ImageIcon minhaImagem = new ImageIcon("navios//Spart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Spart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 								}
 								else if(h==1){
 									if(barcosali[k].direcao==1){
-										ImageIcon minhaImagem = new ImageIcon("navios//SVpart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//SVpart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==2){
-										ImageIcon minhaImagem = new ImageIcon("navios//Spart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Spart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==3){
-										ImageIcon minhaImagem = new ImageIcon("navios//SVpart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//SVpart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==4){
-										ImageIcon minhaImagem = new ImageIcon("navios//Spart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Spart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
@@ -2767,44 +2793,44 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							else if(k==3){
 								if(h==0){
 									if(barcosali[k].direcao==1){
-										ImageIcon minhaImagem = new ImageIcon("navios//CVpart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//CVpart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==2){
-										ImageIcon minhaImagem = new ImageIcon("navios//Cpart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Cpart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==3){
-										ImageIcon minhaImagem = new ImageIcon("navios//CVpart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//CVpart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==4){
-										ImageIcon minhaImagem = new ImageIcon("navios//Cpart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Cpart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 								}
 								else if(h==1){
 									if(barcosali[k].direcao==1){
-										ImageIcon minhaImagem = new ImageIcon("navios//CVpart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//CVpart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==2){
-										ImageIcon minhaImagem = new ImageIcon("navios//Cpart2.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Cpart2.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==3){
-										ImageIcon minhaImagem = new ImageIcon("navios//CVpart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//CVpart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
 									if(barcosali[k].direcao==4){
-										ImageIcon minhaImagem = new ImageIcon("navios//Cpart1.jpg");
+										ImageIcon minhaImagem = new ImageIcon("Navios//Cpart1.jpg");
 										minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
 										table[i][j].setIcon(minhaImagem);
 									}
@@ -3605,9 +3631,9 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		
 		ImageIcon icon = new ImageIcon("Agua//WaterNoClick.jpg");
 		ImageIcon icon2 = new ImageIcon("Agua//WaterNoClick.jpg");
-		ImageIcon Escolta = new ImageIcon("Navios//Escolta2.jpg");
-		ImageIcon Submarino = new ImageIcon("Navios//Submarino2.jpg");
-		ImageIcon Caca = new ImageIcon("Navios//Caca2.jpg");
+		Escolta = new ImageIcon("Navios//Escolta2.jpg");
+		Submarino = new ImageIcon("Navios//Submarino2.jpg");
+		Caca = new ImageIcon("Navios//Caca2.jpg");
 		ImageIcon NovoJogo = new ImageIcon("Botoes//NovoJogo.jpg");
 		ImageIcon Restart = new ImageIcon("Botoes//Restart.jpg");
 		ImageIcon Dica = new ImageIcon("Botoes//Dica.jpg");
@@ -3616,6 +3642,9 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		ImageIcon NovoJogos = new ImageIcon("Botoes//NovoJogoS.jpg");
 		ImageIcon Restarts = new ImageIcon("Botoes//RestartS.jpg");
 		ImageIcon VoltarMenus = new ImageIcon("Botoes//VoltarMenuS.jpg");
+		CacaS = new ImageIcon("Navios//CacaS.jpg");
+		EscoltaS = new ImageIcon("Navios//EscoltaS.jpg");
+		SubmarinoS = new ImageIcon("Navios//SubmarinoS.jpg");
 		
 		int largura = 135;
 		int altura = 127;
@@ -3625,7 +3654,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		Submarino.setImage(Submarino.getImage().getScaledInstance(largura, altura, 100));
 		Caca.setImage(Caca.getImage().getScaledInstance(largura, altura, 100));
 		
-		//mandar vitor
 		NovoJogo.setImage(NovoJogo.getImage().getScaledInstance(largura, altura, 100));
 		Restart.setImage(Restart.getImage().getScaledInstance(largura, altura, 100));
 		Dica.setImage(Dica.getImage().getScaledInstance(largura, altura, 100));
@@ -3636,6 +3664,10 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		Restarts.setImage(Restarts.getImage().getScaledInstance(largura, altura, 100));
 		Dicas.setImage(Dicas.getImage().getScaledInstance(largura, altura, 100));
 		VoltarMenus.setImage(VoltarMenus.getImage().getScaledInstance(largura, altura, 100));
+		CacaS.setImage(CacaS.getImage().getScaledInstance(largura,altura,100));
+		EscoltaS.setImage(EscoltaS.getImage().getScaledInstance(largura,altura,100));
+		SubmarinoS.setImage(SubmarinoS.getImage().getScaledInstance(largura,altura,100));
+		
 		
 		compsToExperiment.setLayout(experimentLayout);
 		teste.setLayout(experimentLayout);
@@ -3661,6 +3693,9 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		tiros[4].setRolloverIcon(NovoJogos);
 		tiros[5].setRolloverIcon(Restarts);
 		tiros[6].setRolloverIcon(VoltarMenus);
+		tiros[0].setRolloverIcon(SubmarinoS);
+		tiros[1].setRolloverIcon(EscoltaS);
+		tiros[2].setRolloverIcon(CacaS);
 		
 		for(int i=0;i<7;i++) {
 			tiros[i].setMargin(new Insets(0, 0, 0, 0));
@@ -3679,7 +3714,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		for(int i = 0; i<7; i++) {
 			tiros[i].addActionListener(this);
 			tiros[i].setPreferredSize(new Dimension(10,10));
-			
 		}
 		
 		for(int i=0; i<10; i++) {
@@ -3934,9 +3968,8 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			tiro=1;
 		}
 		if(tiro==0){
-			JOptionPane.showMessageDialog(this,"Parabéns você venceu o jogo !","",JOptionPane.WARNING_MESSAGE);
-			this.jogo.createMenu();
-			this.dispose();
+			this.setVisible(false);
+			this.jogo.createPosGame(true);
 		}
 		else {
 			playSound("Efeitos//tiro.wav",-6.0f,false);
@@ -4140,7 +4173,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						if(k==0){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4149,7 +4182,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4158,7 +4191,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4167,7 +4200,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4178,7 +4211,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4187,7 +4220,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4196,7 +4229,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4205,7 +4238,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4216,7 +4249,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==2){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4225,7 +4258,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4234,7 +4267,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4243,7 +4276,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4254,7 +4287,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==3){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4263,7 +4296,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4272,7 +4305,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4281,7 +4314,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4294,7 +4327,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==1){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4303,7 +4336,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4312,7 +4345,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4321,7 +4354,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4332,7 +4365,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4341,7 +4374,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4350,7 +4383,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4359,7 +4392,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4370,7 +4403,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==2){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4379,7 +4412,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4388,7 +4421,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4397,7 +4430,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4410,7 +4443,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==2){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4419,7 +4452,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4428,7 +4461,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4437,7 +4470,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4448,7 +4481,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4457,7 +4490,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4466,7 +4499,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4475,7 +4508,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4488,7 +4521,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==3){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4497,7 +4530,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4506,7 +4539,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4515,7 +4548,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4526,7 +4559,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4535,7 +4568,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4544,7 +4577,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4553,7 +4586,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4592,7 +4625,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						if(k==0){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4601,7 +4634,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4610,7 +4643,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4619,7 +4652,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4630,7 +4663,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4639,7 +4672,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4648,7 +4681,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4657,7 +4690,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4668,7 +4701,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==2){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4677,7 +4710,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4686,7 +4719,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4695,7 +4728,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4706,7 +4739,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==3){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4715,7 +4748,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4724,7 +4757,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4733,7 +4766,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4748,7 +4781,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==1){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4757,7 +4790,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4766,7 +4799,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4775,7 +4808,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4786,7 +4819,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4795,7 +4828,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4804,7 +4837,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4813,7 +4846,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4824,7 +4857,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==2){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4833,7 +4866,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4842,7 +4875,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4851,7 +4884,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4866,7 +4899,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==2){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4875,7 +4908,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4884,7 +4917,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4893,7 +4926,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4904,7 +4937,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4913,7 +4946,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4922,7 +4955,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4931,7 +4964,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4946,7 +4979,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==3){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4955,7 +4988,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4964,7 +4997,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4973,7 +5006,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4984,7 +5017,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -4993,7 +5026,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5002,7 +5035,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5011,7 +5044,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5048,7 +5081,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						if(k==0){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5057,7 +5090,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5066,7 +5099,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5075,7 +5108,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5086,7 +5119,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5095,7 +5128,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5104,7 +5137,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5113,7 +5146,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5124,7 +5157,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==2){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5133,7 +5166,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5142,7 +5175,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5151,7 +5184,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5162,7 +5195,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==3){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5171,7 +5204,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5180,7 +5213,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5189,7 +5222,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5204,7 +5237,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==1){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5213,7 +5246,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5222,7 +5255,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5231,7 +5264,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5242,7 +5275,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5251,7 +5284,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5260,7 +5293,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5269,7 +5302,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5280,7 +5313,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==2){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5289,7 +5322,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5298,7 +5331,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5307,7 +5340,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5322,7 +5355,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==2){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5331,7 +5364,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5340,7 +5373,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5349,7 +5382,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5360,7 +5393,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5369,7 +5402,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5378,7 +5411,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5387,7 +5420,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5402,7 +5435,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==3){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5411,7 +5444,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5420,7 +5453,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5429,7 +5462,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5440,7 +5473,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5449,7 +5482,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5458,7 +5491,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5467,7 +5500,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5504,7 +5537,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						if(k==0){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5513,7 +5546,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5522,7 +5555,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5531,7 +5564,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5542,7 +5575,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5551,7 +5584,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5560,7 +5593,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5569,7 +5602,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5580,7 +5613,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==2){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5589,7 +5622,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5598,7 +5631,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5607,7 +5640,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5618,7 +5651,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==3){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5627,7 +5660,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5636,7 +5669,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5645,7 +5678,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5660,7 +5693,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==1){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5669,7 +5702,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5678,7 +5711,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5687,7 +5720,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5698,7 +5731,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5707,7 +5740,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5716,7 +5749,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5725,7 +5758,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5736,7 +5769,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==2){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5745,7 +5778,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5754,7 +5787,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5763,7 +5796,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5778,7 +5811,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==2){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5787,7 +5820,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5796,7 +5829,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5805,7 +5838,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5816,7 +5849,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5825,7 +5858,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5834,7 +5867,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5843,7 +5876,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5858,7 +5891,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==3){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5867,7 +5900,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5876,7 +5909,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5885,7 +5918,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5896,7 +5929,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5905,7 +5938,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5914,7 +5947,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5923,7 +5956,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5960,7 +5993,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						if(k==0){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5969,7 +6002,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5978,7 +6011,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5987,7 +6020,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -5998,7 +6031,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6007,7 +6040,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6016,7 +6049,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6025,7 +6058,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6036,7 +6069,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==2){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6045,7 +6078,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6054,7 +6087,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6063,7 +6096,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6074,7 +6107,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==3){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6083,7 +6116,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart4M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart4M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6092,7 +6125,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//PVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//PVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6101,7 +6134,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Ppart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Ppart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6116,7 +6149,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==1){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6125,7 +6158,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6134,7 +6167,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6143,7 +6176,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6154,7 +6187,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6163,7 +6196,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6172,7 +6205,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6181,7 +6214,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6192,7 +6225,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==2){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6201,7 +6234,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart3M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart3M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6210,7 +6243,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//EVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//EVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6219,7 +6252,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Epart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Epart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6234,7 +6267,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==2){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6243,7 +6276,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6252,7 +6285,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6261,7 +6294,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6272,7 +6305,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6281,7 +6314,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6290,7 +6323,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//SVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//SVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6299,7 +6332,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Spart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Spart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6314,7 +6347,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 						else if(k==3){
 							if(h==0){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6323,7 +6356,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6332,7 +6365,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6341,7 +6374,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6352,7 +6385,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 							}
 							else if(h==1){
 								if(barcosali[k].direcao==1){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6361,7 +6394,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==2){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart2M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart2M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6370,7 +6403,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==3){
-									ImageIcon minhaImagem = new ImageIcon("navios//CVpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//CVpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6379,7 +6412,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 									
 								}
 								if(barcosali[k].direcao==4){
-									ImageIcon minhaImagem = new ImageIcon("navios//Cpart1M.jpg");
+									ImageIcon minhaImagem = new ImageIcon("Navios//Cpart1M.jpg");
 									int largura = 50;
 									int altura = 47;
 									minhaImagem.setImage(minhaImagem.getImage().getScaledInstance(largura, altura, 100));
@@ -6411,9 +6444,8 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			quais[y+1][x]=1;
 		}
 		if(barcosali[1].vivo==false && barcosali[2].vivo==false && barcosali[3].vivo==false) {
-			JOptionPane.showMessageDialog(this,"Que pena, voce perdeu o jogo, tente de novo!","",JOptionPane.WARNING_MESSAGE);
-			this.jogo.createMenu();
-			this.dispose();
+			this.setVisible(false);
+			this.jogo.createPosGame(false);
 		}
 	}
 }

@@ -92,21 +92,25 @@ public class Menu extends JFrame implements ActionListener {
 	{
 		//true == musica
 		//false == efeito
-		try 
-	   {
-	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
-	    clip = AudioSystem.getClip( );
-	    clip.open(audioInputStream);
-	    FloatControl gainControl = 
-	    	    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-	    	gainControl.setValue(f); 
-	    	
-	    	if(set) {
-	    		clip.start( );
+		try{
+		   if(set){
+		    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
+			    clip = AudioSystem.getClip( );
+			    clip.open(audioInputStream);
+			    
+			    FloatControl gainControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+			    gainControl.setValue(f);
+	    		clip.loop(50);
 	    	}
-	    	else {
+	    	else{
+	    		AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
+			    Clip clip = AudioSystem.getClip( );
+			    clip.open(audioInputStream);
+			    
+			    FloatControl gainControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+			    gainControl.setValue(f);
 	    		clip.loop(0);
-	    	} 
+    		} 
 	   }
 		catch(Exception ex)
 		{
@@ -119,16 +123,12 @@ public class Menu extends JFrame implements ActionListener {
 		
 		if(object == MenuButton[0]){
 			playSound("Efeitos//BotaoClick.wav",-6.0f,false);
-			JOptionPane.showMessageDialog(this,"KK eae joguinho");
-			
 			this.dispose();
 			jogo.createGame();
 		}
 		if(object == MenuButton[1]) {
 			playSound("Efeitos//BotaoClick.wav",-6.0f,false);
-			JOptionPane.showMessageDialog(this,"*Abre a tela de créditos*");
-			
+			if(clip!=null) clip.stop();
 		}
-		
 	}
 }

@@ -7,7 +7,7 @@ public class JPanelTwo extends JPanel{
 	private static final long serialVersionUID = 145587478141456489L;
 	private ImageIcon image;
 	JPanelTwo(int qual){
-		//0 menu 1 tabuleiro player 2 tabuleiro PC 3 tabela de tiro 4 botao pregame
+		//0 menu 1 tabuleiro player 2 tabuleiro PC 3 tabela de tiro 4 botao pregame 5 pos game win 6 pos game defeat
 		if(qual == 0) {
 			image = new ImageIcon("Background//FundoMenu.jpg");
 			image.setImage(image.getImage().getScaledInstance(800, 660, 100));
@@ -28,11 +28,19 @@ public class JPanelTwo extends JPanel{
 			image = new ImageIcon("Background//FundoGame3.jpg");
 			image.setImage(image.getImage().getScaledInstance(600, 500, 100));
 		}
+		if(qual == 5) {
+			image = new ImageIcon("Background//Vitoria.jpg");
+			image.setImage(image.getImage().getScaledInstance(800, 600, 100));
+		}
+		if(qual == 6) {
+			image = new ImageIcon("Background//Derrota.jpg");
+			image.setImage(image.getImage().getScaledInstance(800, 600, 100));
+		}
 	}
 	public static JPanel drawGamePanel(){
-	    //Create game panel and attributes
+	    // cria painel do jogo
 	    JPanel gamePanel = new JPanel();
-	    //Set Return
+	    //retorna
 	    return gamePanel;
 	}
 

@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
 
 
@@ -18,12 +19,13 @@ public class PMotor {
 	private PreGame pregame;
 	private Tabuleiro frame;
 	private Boolean isMusicPlaying = false;
+	private PosGame posgame;
 	
 	public void createMenu(){
 		
 		
 		// criando e configurando a janela
-		menu = new Menu("qe",this);
+		menu = new Menu("Batalha Naval",this);
 		
 		//fecha a janela e termina a execucao
 		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,7 +45,7 @@ public class PMotor {
 	public void createPreGame(){
 		
 		// criando e configurando a janela
-		pregame = new PreGame("Helou",this);
+		pregame = new PreGame("Batalha Naval",this);
 		barcosali=new Barco[4];
 		for(int i =0;i<4;i++) {
 			barcosali[i]=null;
@@ -70,7 +72,7 @@ public class PMotor {
 		frame.pack();
 		frame.setVisible(true);
 		
-		String qual = JOptionPane.showInputDialog(null,"Deseja que os barcos sejam colocados de maneira aleatoria ou manual?","");
+		String qual = JOptionPane.showInputDialog(null,"Deseja que os barcos sejam colocados de maneira aleatoria ou manual?","",JOptionPane.QUESTION_MESSAGE);
 		if(qual == null) {
 			frame.dispose();
 			createMenu();
@@ -83,6 +85,21 @@ public class PMotor {
 			}
 		}
 	}
+	public void createPosGame(Boolean v){
+		
+		// criando e configurando a janela
+		posgame = new PosGame("Batalha Naval",this,frame);
+		
+		//fecha a janela e termina a execucao
+		posgame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//Configurando ContentPane
+		posgame.addComponentsToPane(v);
+		
+		//mostrando a janela
+		posgame.pack();
+		posgame.setVisible(true);
+	}
 
 	public void playSound(String soundName,float f)
 	{
@@ -91,9 +108,8 @@ public class PMotor {
 	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
 	    Clip clip = AudioSystem.getClip( );
 	    clip.open(audioInputStream);
-	    FloatControl gainControl = 
-	    	    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-	    	gainControl.setValue(f); 
+	    FloatControl gainControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+	    gainControl.setValue(f); 
 	    	
 	    clip.start( );
 	    
@@ -126,7 +142,8 @@ public class PMotor {
 	public void Setbarcos(Barco[] barcosali) {
 		this.barcosali=barcosali;
 	}
-	public void setConfiguration() {
+	public void setConfiguration() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+		UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 		ImageIcon icon = new ImageIcon("Icones//gothic.png");
 		icon.setImage(icon.getImage().getScaledInstance(100, 90, 100));
 		UIManager.getDefaults().put("OptionPane.background",new Color(0,0,0));
@@ -140,5 +157,6 @@ public class PMotor {
 		UIManager.put("OptionPane.messageForeground", Color.gray);
 		UIManager.put("TextField.font", new FontUIResource(new Font("Old English Text MT",Font.PLAIN,20)));
 		UIManager.put("font", new FontUIResource(new Font("Old English Text MT",Font.PLAIN,20)));
+		
 	}
 }
