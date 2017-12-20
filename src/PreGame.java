@@ -52,7 +52,7 @@ public class PreGame extends JFrame implements ActionListener {
 		qualer[2]=0;
 		qualer[3]=0;
 	}
-	public void playSound(String soundName,float f,boolean set)
+	public void playSoundE(String soundName,float f,boolean set)
 	{
 		//true == musica
 		//false == efeito
@@ -79,6 +79,7 @@ public class PreGame extends JFrame implements ActionListener {
 			ex.printStackTrace( );
 		}
 	}
+
 	public void addComponentsToPane() {
 		final JPanelTwo navios = new JPanelTwo(1);
 		final JPanelTwo tabela = new JPanelTwo(1);
@@ -135,7 +136,7 @@ public class PreGame extends JFrame implements ActionListener {
 		tabela.setPreferredSize(new Dimension(600,500)); // define o tamanho do tabuleiro
 		navios.setPreferredSize(new Dimension(70,130)); // define o tamanho do menu
 		
-		back.setPreferredSize(new Dimension(70,70));
+		back.setPreferredSize(new Dimension(80,70));
 		voltar = new JButton(VoltarMenu);
 		
 		voltar.setMargin(new Insets(0, 0, 0, 0));
@@ -147,7 +148,7 @@ public class PreGame extends JFrame implements ActionListener {
 		voltar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				playSound("Efeitos//BotaoEntered.wav", -5.0f, false);
+				playSoundE("Efeitos//BotaoEntered.wav", -5.0f, false);
 			}
 		});
 				
@@ -173,7 +174,7 @@ public class PreGame extends JFrame implements ActionListener {
 			buttons[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					playSound("Efeitos//BotaoEntered.wav", -5.0f, false);
+					playSoundE("Efeitos//BotaoEntered.wav", -5.0f, false);
 				}
 			});
 		}
@@ -208,7 +209,7 @@ public class PreGame extends JFrame implements ActionListener {
 				table[i][j].addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseEntered(MouseEvent e) {
-						playSound("Efeitos//Agua2.wav", -5.0f, false);
+						playSoundE("Efeitos//Agua2.wav", -5.0f, false);
 					}
 				});
 			}
@@ -363,7 +364,7 @@ public class PreGame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e){		
 		Object object = e.getSource();
 		if(object == buttons[0] || object == buttons[1] || object == buttons[2] || object == buttons[3] || object == voltar) {
-			playSound("Efeitos//BotaoClick.wav",-6.0f,false);
+			playSoundE("Efeitos//BotaoClick.wav",-6.0f,false);
 		}
 		int largura=50;
 		int altura=47;
@@ -372,19 +373,19 @@ public class PreGame extends JFrame implements ActionListener {
 		if(qual==0){
 			if(object == buttons[0]) {
 				qual=1;
-				playSound("Efeitos//BotaoClick.wav",-8.0f,false);
+				playSoundE("Efeitos//BotaoClick.wav",-8.0f,false);
 			}
 			if(object == buttons[1]) {
 				qual=2;
-				playSound("Efeitos//BotaoClick.wav",-8.0f,false);
+				playSoundE("Efeitos//BotaoClick.wav",-8.0f,false);
 			}
 			if(object == buttons[2]) {
 				qual=3;
-				playSound("Efeitos//BotaoClick.wav",-8.0f,false);
+				playSoundE("Efeitos//BotaoClick.wav",-8.0f,false);
 			}
 			if(object == buttons[3]){
 				qual=4;
-				playSound("Efeitos//BotaoClick.wav",-8.0f,false);
+				playSoundE("Efeitos//BotaoClick.wav",-8.0f,false);
 			}
 		}
 
@@ -1204,10 +1205,11 @@ public class PreGame extends JFrame implements ActionListener {
 			this.dispose();
 		}
 		if(object==voltar){
-			boolean result = JOptionPane.showConfirmDialog(this, "Deseja voltar para o menu? todos os dados seram perdidos", "", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0;		
+			boolean result = JOptionPane.showConfirmDialog(this, "Deseja voltar para o menu? Todos os dados serão perdidos", "", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0;		
 			if(result == true) {
 				jogo.Dispose(jogo.Gettabu());
 				this.dispose();
+				jogo.clipStop("Jogo");
 				jogo.createMenu();
 			}
 		}

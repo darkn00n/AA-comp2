@@ -18,11 +18,59 @@ public class PMotor {
 	private Menu menu;
 	private PreGame pregame;
 	private Tabuleiro frame;
-	private Boolean isMusicPlaying = false;
 	private PosGame posgame;
+	private Creditos creditos;
+	private Tutorial tutorial;
+	private Historia historia;
+	private Clip clipMenu,clipJogo,clipDefeat,clipVictory,clipTiro,clipBotaoClick,clipBotaoEntered,clipAgua,clipCreditos;
 	
-	public void createMenu(){
+	public Menu getMenu() {
+		return menu;
+	}
+	public void createHistoria() {
+		// criando e configurando a janela
+				historia = new Historia("Batalha Naval",this);
+				
+				//fecha a janela e termina a execucao
+				historia.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				
+				//Configurando ContentPane
+				historia.addComponentsToPane();
+				
+				//mostrando a janela
+				historia.pack();
+				historia.setVisible(true);
+	}
+	public void createTutorial() {
+		// criando e configurando a janela
+				tutorial = new Tutorial("Batalha Naval",this);
+				
+				//fecha a janela e termina a execucao
+				tutorial.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				
+				//Configurando ContentPane
+				tutorial.addComponentsToPane();
+				
+				//mostrando a janela
+				tutorial.pack();
+				tutorial.setVisible(true);
+	}
+	public void createCreditos() {
+		// criando e configurando a janela
+		creditos = new Creditos("Batalha Naval",this);
 		
+		//fecha a janela e termina a execucao
+		creditos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//Configurando ContentPane
+		creditos.addComponentsToPane();
+		
+		//mostrando a janela
+		creditos.pack();
+		creditos.setVisible(true);
+				
+	}
+	public void createMenu(){
 		
 		// criando e configurando a janela
 		menu = new Menu("Batalha Naval",this);
@@ -38,9 +86,6 @@ public class PMotor {
 		menu.setVisible(true);
 		
 		
-	}
-	public Boolean getStatus() {
-		return isMusicPlaying;
 	}
 	public void createPreGame(){
 		
@@ -61,7 +106,6 @@ public class PMotor {
 		pregame.setVisible(true);
 	}
 	public void createGame() {
-		isMusicPlaying = true;
 		//Criando e configurando a janela
 		frame = new Tabuleiro("Batalha Naval",this);
 		//Fecha a janela e termina a execução
@@ -75,6 +119,7 @@ public class PMotor {
 		String qual = JOptionPane.showInputDialog(null,"Deseja que os barcos sejam colocados de maneira aleatoria ou manual?","",JOptionPane.QUESTION_MESSAGE);
 		if(qual == null) {
 			frame.dispose();
+			this.clipStop("Jogo");
 			createMenu();
 		}
 		else{
@@ -100,20 +145,64 @@ public class PMotor {
 		posgame.pack();
 		posgame.setVisible(true);
 	}
-
-	public void playSound(String soundName,float f)
+	public void clipStop(String qual) {
+		switch(qual) {
+			case "Menu":	clipMenu.stop();
+					break;
+			case "Jogo":	clipJogo.stop();
+					break;
+			case "Tiro":	clipTiro.stop();
+					break;
+			case "Agua":	clipAgua.stop();
+					break;
+			case "Victory":	clipVictory.stop();
+					break;
+			case "Defeat":	clipDefeat.stop();
+					break;
+			case "Creditos": clipCreditos.stop();
+					break;
+			case "Click":	clipBotaoClick.stop();
+					break;
+			case "Entered":	clipBotaoEntered.stop();
+					break;
+					}
+	}
+	public void playSound(String qual,float f)
 	{
 		try 
 	   {
-	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
-	    Clip clip = AudioSystem.getClip( );
-	    clip.open(audioInputStream);
-	    FloatControl gainControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
-	    gainControl.setValue(f); 
-	    	
-	    clip.start( );
-	    
-	    
+			switch(qual) {
+			case "Menu":	FloatControl gainControl = (FloatControl)clipMenu.getControl(FloatControl.Type.MASTER_GAIN);
+			    			gainControl.setValue(f); 
+			    			clipMenu.open();
+			    			clipMenu.setFramePosition(0);
+			    			clipMenu.loop(50);
+			    			break;
+			case "Jogo":	FloatControl gainControl1 = (FloatControl)clipJogo.getControl(FloatControl.Type.MASTER_GAIN);
+							gainControl1.setValue(f); 
+							clipJogo.open();
+			    			clipJogo.setFramePosition(0);
+							clipJogo.loop(50);
+							break;
+			case "Victory":	FloatControl gainControl4 = (FloatControl)clipVictory.getControl(FloatControl.Type.MASTER_GAIN);
+							gainControl4.setValue(f); 
+							clipVictory.open();
+			    			clipVictory.setFramePosition(0);
+							clipVictory.loop(50);
+							break;
+			case "Defeat":	FloatControl gainControl5 = (FloatControl)clipDefeat.getControl(FloatControl.Type.MASTER_GAIN);
+							gainControl5.setValue(f); 
+							clipDefeat.open();
+							clipDefeat.setFramePosition(0);
+							clipDefeat.loop(50);
+							break;
+			case "Creditos":	FloatControl gainControl6 = (FloatControl)clipCreditos.getControl(FloatControl.Type.MASTER_GAIN);
+							gainControl6.setValue(f); 
+							clipCreditos.open();
+							clipCreditos.setFramePosition(0);
+							clipCreditos.loop(50);
+							break;			
+			}
 	   }
 		catch(Exception ex)
 		{
@@ -157,6 +246,43 @@ public class PMotor {
 		UIManager.put("OptionPane.messageForeground", Color.gray);
 		UIManager.put("TextField.font", new FontUIResource(new Font("Old English Text MT",Font.PLAIN,20)));
 		UIManager.put("font", new FontUIResource(new Font("Old English Text MT",Font.PLAIN,20)));
+		try {
+			
+		AudioInputStream menu = AudioSystem.getAudioInputStream(new File("Efeitos//Menu.wav").getAbsoluteFile( ));
+		AudioInputStream jogo = AudioSystem.getAudioInputStream(new File("Efeitos//InGameF.wav").getAbsoluteFile( ));
+		AudioInputStream tiro = AudioSystem.getAudioInputStream(new File("Efeitos//Tiro.wav").getAbsoluteFile( ));
+		AudioInputStream click = AudioSystem.getAudioInputStream(new File("Efeitos//BotaoClick.wav").getAbsoluteFile( ));
+		AudioInputStream entered = AudioSystem.getAudioInputStream(new File("Efeitos//BotaoEntered.wav").getAbsoluteFile( ));
+		AudioInputStream agua = AudioSystem.getAudioInputStream(new File("Efeitos//Agua2.wav").getAbsoluteFile( ));
+		AudioInputStream victory = AudioSystem.getAudioInputStream(new File("Efeitos//Vitoria.wav").getAbsoluteFile( ));
+		AudioInputStream defeat = AudioSystem.getAudioInputStream(new File("Efeitos//Derrota.wav").getAbsoluteFile( ));
+		AudioInputStream creditos = AudioSystem.getAudioInputStream(new File("Efeitos//Creditos.wav").getAbsoluteFile( ));
 		
+		
+	    clipMenu = AudioSystem.getClip( );
+	    clipJogo = AudioSystem.getClip( );
+	    clipDefeat = AudioSystem.getClip( );
+	    clipVictory = AudioSystem.getClip( );
+	    clipTiro = AudioSystem.getClip( );
+	    clipBotaoClick = AudioSystem.getClip( );
+	    clipBotaoEntered = AudioSystem.getClip( );
+	    clipCreditos = AudioSystem.getClip( );
+	    clipAgua = AudioSystem.getClip( );
+	    
+	    clipMenu.open(menu);
+	    clipJogo.open(jogo);
+	    clipDefeat.open(defeat);
+	    clipVictory.open(victory);
+	    clipTiro.open(tiro);
+	    clipBotaoClick.open(click);
+	    clipBotaoEntered.open(entered);
+	    clipCreditos.open(creditos);
+	    clipAgua.open(agua);
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error with playing sound.");
+			ex.printStackTrace( );
+		}
 	}
 }

@@ -13,16 +13,14 @@ public class Menu extends JFrame implements ActionListener {
 	private GridLayout MenuLayout = new GridLayout(8,0,3,1);
 	private JButton MenuButton[];
 	private PMotor jogo;
-	private Clip clip;
 	
 	Menu(String n,PMotor jogo){
 		super(n);
-		setSize(800,660);
+		setSize(800,600);
 		this.jogo=jogo;
 		setResizable(false);
 		
-		if(!jogo.getStatus())
-		playSound("Efeitos//Menu.wav",-10.0f,true);
+		playSound();
 	}
 	public void addComponentsToPane() {
 		final JPanelTwo menu = new JPanelTwo(0);
@@ -47,14 +45,13 @@ public class Menu extends JFrame implements ActionListener {
 		MenuButton[0].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				playSound("Efeitos//BotaoEntered.wav", -5.0f, false);
+				playSoundE("Efeitos//BotaoEntered.wav", -5.0f, false);
 			}
 		});
-		
 		MenuButton[1].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				playSound("Efeitos//BotaoEntered.wav", -5.0f, false);
+				playSoundE("Efeitos//BotaoEntered.wav", -5.0f, false);
 			}
 		});
 			
@@ -88,29 +85,30 @@ public class Menu extends JFrame implements ActionListener {
 		// fim da adicao de coisas para enquadramento
 		this.getContentPane().add(menu, BorderLayout.EAST); // joga td q foi adicionado para o centro
 	}
-	public void playSound(String soundName,float f,boolean set)
+	public void playSound(){
+		
+		jogo.playSound("Menu",-10.0f);
+	}
+	public void playSoundE(String soundName,float f,boolean set)
 	{
 		//true == musica
 		//false == efeito
-		try{
-		   if(set){
-		    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
-			    clip = AudioSystem.getClip( );
-			    clip.open(audioInputStream);
-			    
-			    FloatControl gainControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
-			    gainControl.setValue(f);
-	    		clip.loop(50);
+		
+		try 
+	   {
+	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
+	    Clip clip = AudioSystem.getClip( );
+	    clip.open(audioInputStream);
+	    FloatControl gainControl = 
+	    	    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+	    	gainControl.setValue(f); 
+	    	
+	    	if(set) {
+	    		clip.start( );
 	    	}
-	    	else{
-	    		AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
-			    Clip clip = AudioSystem.getClip( );
-			    clip.open(audioInputStream);
-			    
-			    FloatControl gainControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
-			    gainControl.setValue(f);
+	    	else {
 	    		clip.loop(0);
-    		} 
+	    	} 
 	   }
 		catch(Exception ex)
 		{
@@ -118,17 +116,20 @@ public class Menu extends JFrame implements ActionListener {
 			ex.printStackTrace( );
 		}
 	}
+
 	public void actionPerformed(ActionEvent e) {
 		Object object = e.getSource();
 		
 		if(object == MenuButton[0]){
-			playSound("Efeitos//BotaoClick.wav",-6.0f,false);
+			playSoundE("Efeitos//BotaoClick.wav",-6.0f,false);
 			this.dispose();
-			jogo.createGame();
+			jogo.createHistoria();
 		}
 		if(object == MenuButton[1]) {
-			playSound("Efeitos//BotaoClick.wav",-6.0f,false);
-			if(clip!=null) clip.stop();
+			playSoundE("Efeitos//BotaoClick.wav",-6.0f,false);
+			jogo.clipStop("Menu");
+			this.dispose();
+			jogo.createCreditos();
 		}
 	}
 }

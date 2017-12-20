@@ -31,6 +31,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	
 	public Tabuleiro(String n,PMotor jogo){
 		super(n);
+
 		labelsFirst = new JLabel[20];
 		labelsSecond = new JLabel[20];
 		
@@ -71,9 +72,14 @@ public class Tabuleiro extends JFrame implements ActionListener{
 				debug[i][j]=0;
 			}
 		}
-		//playSound("Efeitos//InGame.wav",-10.0f,true);
+		playSound();
 	}
-	public void playSound(String soundName,float f,boolean set)
+
+	public void playSound(){
+		
+		jogo.playSound("Jogo",-10.0f);
+	}
+	public void playSoundE(String soundName,float f,boolean set)
 	{
 		//true == musica
 		//false == efeito
@@ -83,8 +89,9 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
 	    Clip clip = AudioSystem.getClip( );
 	    clip.open(audioInputStream);
-	    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-	    gainControl.setValue(f); 
+	    FloatControl gainControl = 
+	    	    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+	    	gainControl.setValue(f); 
 	    	
 	    	if(set) {
 	    		clip.start( );
@@ -99,10 +106,11 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			ex.printStackTrace( );
 		}
 	}
+
 	public void actionPerformed(ActionEvent e){
 		Object object = e.getSource();
 		if(object == tiros[0] || object == tiros[1] || object == tiros[2] || object == tiros[3] || object == tiros[4] || object == tiros[5] || object == tiros[6]) {
-			playSound("Efeitos//BotaoClick.wav",-6.0f,false);
+			playSoundE("Efeitos//BotaoClick.wav",-6.0f,false);
 		}
 		
 		int cont=0;
@@ -116,7 +124,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			for(int j = 0; j<10 ; j++){
 				if (object == table2[i][j]){
 					if(hue==0){
-						if(tiro != 0) playSound("Efeitos//tiro.wav",-6.0f,false);
+						if(tiro != 0) playSoundE("Efeitos//tiro.wav",-6.0f,false);
 						if(tiro==0){
 							JOptionPane.showMessageDialog(this,"Escolha um tipo de tiro ou a dica para realizar uma ação","",JOptionPane.WARNING_MESSAGE);
 						}
@@ -2493,6 +2501,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 					if(i==4){
 						boolean result = JOptionPane.showConfirmDialog(this, "Deseja criar um novo jogo?", "", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0;		
 						if(result == true) {
+							jogo.clipStop("Jogo");
 							this.dispose();
 							jogo.createGame();
 						}
@@ -2506,6 +2515,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 					if(i==6){
 						boolean result = JOptionPane.showConfirmDialog(this, "Se você sair o jogo será finalizado. \n Deseja prosseguir?", "", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0;		
 						if(result == true) {
+							jogo.clipStop("Jogo");
 							this.dispose();
 							jogo.createMenu();
 						}
@@ -2527,7 +2537,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	
 	public void Reinicia(){
 		JOptionPane.showMessageDialog(this, "Aguarde, o jogo será reinicializado.", "",JOptionPane.WARNING_MESSAGE);
-		this.setVisible(false);
 		for(int k=0;k<10;k++){
 			for(int h=0;h<10;h++){				
 				ImageIcon minhaImagem = new ImageIcon("agua//WaterNoClick.jpg");
@@ -2575,7 +2584,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		tiros[0].setIcon(Submarino);
 		tiros[1].setIcon(Escolta);
 		tiros[2].setIcon(Caca);
-		this.setVisible(true);
 		JOptionPane.showMessageDialog(this, "O jogo foi reinicializado com sucesso.","",JOptionPane.WARNING_MESSAGE);
 	}
 	public void Mostra(){
@@ -3075,6 +3083,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 				while(!okay2){
 					String wut = JOptionPane.showInputDialog(this,"Você deseja inserir por arquivo ou interface gráfica?","",JOptionPane.WARNING_MESSAGE);
 					if(wut == null){
+						jogo.clipStop("Jogo");
 						jogo.createMenu();
 						this.dispose();
 					}
@@ -3617,6 +3626,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null,"Comando invalido !!! Tente novamente","",JOptionPane.WARNING_MESSAGE);
 				qual = JOptionPane.showInputDialog(this,"Deseja que os barcos sejam colocados de maneira aleatoria ou manual?","",JOptionPane.WARNING_MESSAGE);
 				if(qual == null){
+					jogo.clipStop("Jogo");
 					jogo.createMenu();
 					this.dispose();
 				}
@@ -3648,6 +3658,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		
 		int largura = 135;
 		int altura = 127;
+		
 		icon2.setImage(icon2.getImage().getScaledInstance(50, 47, 100));
 		
 		Escolta.setImage(Escolta.getImage().getScaledInstance(largura, altura, 100));
@@ -3706,7 +3717,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			tiros[i].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				playSound("Efeitos//BotaoEntered.wav", -5.0f, false);
+				playSoundE("Efeitos//BotaoEntered.wav", -5.0f, false);
 			}
 			});
 		}
@@ -3720,16 +3731,15 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			for(int j=0; j<10; j++){
 				table[i][j] = new JButton(icon2);
 				table2[i][j] = new JButton(icon);
+
 				table[i][j].setPreferredSize(new Dimension(10,10));
 				table2[i][j].setPreferredSize(new Dimension(10,10));
 				table2[i][j].addActionListener(this);
-				
 				table2[i][j].setMargin(new Insets(0, 0, 0, 0));
 				table2[i][j].setBorder(null);
 				table2[i][j].setOpaque(false);
 				table2[i][j].setContentAreaFilled(false);
 				table2[i][j].setBorderPainted(false);
-				
 				table[i][j].setMargin(new Insets(0, 0, 0, 0));
 				table[i][j].setBorder(null);
 				table[i][j].setOpaque(false);
@@ -3928,13 +3938,13 @@ public class Tabuleiro extends JFrame implements ActionListener{
 				table2[i][j].addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseEntered(MouseEvent e) {
-						playSound("Efeitos//Agua2.wav", -5.0f, false);
+						playSoundE("Efeitos//Agua2.wav", -5.0f, false);
 					}
 				});
 				table[i][j].addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseEntered(MouseEvent e) {
-						playSound("Efeitos//Agua2.wav", -5.0f, false);
+						playSoundE("Efeitos//Agua2.wav", -5.0f, false);
 					}
 				});
 			}
@@ -3968,11 +3978,12 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			tiro=1;
 		}
 		if(tiro==0){
+			jogo.clipStop("Jogo");
 			this.setVisible(false);
 			this.jogo.createPosGame(true);
 		}
 		else {
-			playSound("Efeitos//tiro.wav",-6.0f,false);
+			playSoundE("Efeitos//tiro.wav",-6.0f,false);
 		}
 		for(int i =0;i<4;i++){
 			if(prox[i]!=null && barcosali[i].vivo==false){
@@ -6444,6 +6455,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			quais[y+1][x]=1;
 		}
 		if(barcosali[1].vivo==false && barcosali[2].vivo==false && barcosali[3].vivo==false) {
+			jogo.clipStop("Jogo");
 			this.setVisible(false);
 			this.jogo.createPosGame(false);
 		}

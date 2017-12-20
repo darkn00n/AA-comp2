@@ -14,7 +14,6 @@ public class PosGame extends JFrame implements ActionListener {
 	private JButton MenuButton[];
 	private PMotor jogo;
 	private Tabuleiro table;
-	private Clip clip;
 	
 	PosGame(String n,PMotor jogo,Tabuleiro table){
 		super(n);
@@ -22,6 +21,8 @@ public class PosGame extends JFrame implements ActionListener {
 		setResizable(false);
 		this.jogo = jogo;
 		this.table = table;
+		
+		
 	}
 	
 	public void addComponentsToPane(Boolean v) {
@@ -29,6 +30,7 @@ public class PosGame extends JFrame implements ActionListener {
 		MenuButton = new JButton[3];
 		
 		if(v) {
+			playSound(true);
 			menu = new JPanelTwo(5);
 			
 			MenuButton = new JButton[3];
@@ -55,7 +57,7 @@ public class PosGame extends JFrame implements ActionListener {
 				MenuButton[i].addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseEntered(MouseEvent e) {
-						playSound("Efeitos//BotaoEntered.wav", -5.0f, false);
+						playSoundE("Efeitos//BotaoEntered.wav", -5.0f, false);
 					}
 				});
 			}
@@ -64,6 +66,7 @@ public class PosGame extends JFrame implements ActionListener {
 			MenuButton[2].setRolloverIcon(new ImageIcon("Botoes//ExitVS.jpg"));
 		}
 		else{
+			playSound(false);
 			menu = new JPanelTwo(6);
 			
 			ImageIcon NewGame = new ImageIcon("botoes//NovoJogoD.jpg"); // Imagem que sera utilizada no primeiro botao
@@ -89,7 +92,7 @@ public class PosGame extends JFrame implements ActionListener {
 				MenuButton[i].addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseEntered(MouseEvent e) {
-						playSound("Efeitos//BotaoEntered.wav", -5.0f, false);
+						playSoundE("Efeitos//BotaoEntered.wav", -5.0f, false);
 					}
 				});
 			}
@@ -136,41 +139,55 @@ public class PosGame extends JFrame implements ActionListener {
 		Object object = e.getSource();
 		
 		if(object == MenuButton[0]){
-			playSound("Efeitos//BotaoClick.wav",-6.0f,false);
+			playSoundE("Efeitos//BotaoClick.wav",-6.0f,false);
 			this.dispose();
 			table.dispose();
+			jogo.clipStop("Victory");
+			jogo.clipStop("Defeat");
 			jogo.createGame();
-			// açao do NovoJogo
 		}
 		if(object == MenuButton[1]){
-			playSound("Efeitos//BotaoClick.wav",-6.0f,false);
+			playSoundE("Efeitos//BotaoClick.wav",-6.0f,false);
 			table.Reinicia();
+			jogo.clipStop("Victory");
+			jogo.clipStop("Defeat");
 			table.setVisible(true);
+			jogo.playSound("Jogo", -10.0f);
 			this.dispose();
-			// açao do reiniciar o jogo
 		}
 		if(object == MenuButton[2]){
-			playSound("Efeitos//BotaoClick.wav",-6.0f,false);
+			playSoundE("Efeitos//BotaoClick.wav",-6.0f,false);
+			jogo.clipStop("Victory");
+			jogo.clipStop("Defeat");
 			this.dispose();
 			table.dispose();
-			//açao do sair do jogo
 		}
 	}
-	public void playSound(String soundName,float f,boolean set)
+	public void playSound(Boolean v){
+		
+		if(v) {
+			jogo.playSound("Victory",-10.0f);
+		}
+		else {
+			jogo.playSound("Defeat", -10.0f);
+		}
+	}
+	public void playSoundE(String soundName,float f,boolean set)
 	{
 		//true == musica
 		//false == efeito
+		
 		try 
 	   {
 	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile( ));
-	    clip = AudioSystem.getClip( );
+	    Clip clip = AudioSystem.getClip( );
 	    clip.open(audioInputStream);
 	    FloatControl gainControl = 
 	    	    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 	    	gainControl.setValue(f); 
 	    	
 	    	if(set) {
-	    		clip.loop(50);
+	    		clip.start( );
 	    	}
 	    	else {
 	    		clip.loop(0);
@@ -182,4 +199,5 @@ public class PosGame extends JFrame implements ActionListener {
 			ex.printStackTrace( );
 		}
 	}
+
 }
